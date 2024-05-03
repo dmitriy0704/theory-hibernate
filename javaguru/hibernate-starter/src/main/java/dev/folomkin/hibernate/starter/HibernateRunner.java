@@ -1,32 +1,40 @@
 package dev.folomkin.hibernate.starter;
 
+import dev.folomkin.hibernate.starter.entity.Birthday;
+import dev.folomkin.hibernate.starter.entity.PersonalInfo;
+import dev.folomkin.hibernate.starter.entity.Role;
 import dev.folomkin.hibernate.starter.entity.User;
+import dev.folomkin.hibernate.starter.util.HibernateUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
-import org.hibernate.cfg.Configuration;
-
 import java.time.LocalDate;
 
+
+@Slf4j
 public class HibernateRunner {
     public static void main(String[] args) {
-        Configuration configuration = new Configuration();
-        configuration.configure();
-//        configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
-//        configuration.addAnnotatedClass(User.class);
-
-        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
-            Session session = sessionFactory.openSession();) {
-            session.beginTransaction();
-            session.save(User.builder()
-                    .username("ivan@gmail.com")
-                    .firstname("ivan")
-                    .lastname("ivanov")
-                    .birthDate(LocalDate.of(2000, 4, 4))
-                    .age(24)
-                    .build());
-
-            session.getTransaction().commit();
+        User user = User.builder()
+                .username("ivan2@gmail.com")
+                .personalInfo(
+                        PersonalInfo.builder()
+                                .firstname("ivan")
+                                .lastname("ivanov")
+                                .birthDate(new Birthday(LocalDate.of(2000, 4, 4)))
+                                .build()
+                )
+                .role(Role.ADMIN)
+                .build();
+        log.info("User object is transient state {} ", user);
+        try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory()) {
+            try (Session session1 = sessionFactory.openSession()) {
+                session1.beginTransaction();
+                session1.saveOrUpdate(user);
+                session1.getTransaction().commit();
+            }
+        } catch (Exception e) {
+            log.error("Exception occurred: ", e);
+            throw e;
         }
     }
 }
