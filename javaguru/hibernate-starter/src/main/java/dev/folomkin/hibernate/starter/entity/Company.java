@@ -1,16 +1,16 @@
 package dev.folomkin.hibernate.starter.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(of = "name")
+@ToString(exclude = "users")
 @Builder
 @Entity
 public class Company {
@@ -23,5 +23,5 @@ public class Company {
     private String name;
 
     @OneToMany(mappedBy = "company")
-    private List<User> users;
+    private Set<User> users;
 }
