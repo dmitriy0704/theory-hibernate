@@ -1,10 +1,26 @@
 package dev.folomkin.hibernate.starter;
 
+import dev.folomkin.hibernate.starter.entity.Company;
+import dev.folomkin.hibernate.starter.util.HibernateUtil;
+import lombok.Cleanup;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 
 class HibernateRunnerTest {
+
+    @Test
+    public void checkOneToMany() throws SQLException {
+        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup var session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        var company = session.get(Company.class, 6);
+        System.out.println(company.getUsers());
+
+        session.getTransaction().commit();
+    }
+
 
     @Test
     public void testHibernateApi() throws SQLException, IllegalAccessException {
