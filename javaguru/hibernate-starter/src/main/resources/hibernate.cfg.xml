@@ -13,6 +13,8 @@
         <mapping class="dev.folomkin.hibernate.starter.entity.User"/>
         <mapping class="dev.folomkin.hibernate.starter.entity.Company"/>
         <mapping class="dev.folomkin.hibernate.starter.entity.Profile"/>
+        <mapping class="dev.folomkin.hibernate.starter.entity.Chat"/>
+        <mapping class="dev.folomkin.hibernate.starter.entity.UsersChat"/>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
 

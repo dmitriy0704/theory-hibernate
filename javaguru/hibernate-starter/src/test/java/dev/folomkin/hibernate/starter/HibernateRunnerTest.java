@@ -6,9 +6,30 @@ import lombok.Cleanup;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.time.Instant;
 
 class HibernateRunnerTest {
+
+    @Test
+    public void checkManyToMany() throws SQLException {
+        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup var session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Chat chat = session.get(Chat.class, 1L);
+        User user = session.get(User.class, 10L);
+        UsersChat userChat = UsersChat.builder()
+                .createdAt(Instant.now())
+                .createdBy("Dmitriy")
+                .build();
+
+        userChat.setChat(chat);
+        userChat.setUser(user);
+
+        session.save(userChat);
+        session.getTransaction().commit();
+    }
+
 
     @Test
     public void checkOneToOne() throws SQLException {

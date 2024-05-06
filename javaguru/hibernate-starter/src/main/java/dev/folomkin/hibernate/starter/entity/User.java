@@ -1,15 +1,15 @@
 package dev.folomkin.hibernate.starter.entity;
 
-import dev.folomkin.hibernate.starter.converter.BirthdayConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"company", "profile"})
+@ToString(exclude = {"company", "profile","userChats"})
 @EqualsAndHashCode(of = "username")
 @Builder
 @Entity
@@ -36,4 +36,9 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile profile;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
+    private List<UsersChat> userChats = new ArrayList<>();
+
 }
