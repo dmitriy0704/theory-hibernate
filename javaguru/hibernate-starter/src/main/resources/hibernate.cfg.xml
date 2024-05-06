@@ -12,6 +12,7 @@
         <property name="format_sql">true</property>
         <mapping class="dev.folomkin.hibernate.starter.entity.User"/>
         <mapping class="dev.folomkin.hibernate.starter.entity.Company"/>
+        <mapping class="dev.folomkin.hibernate.starter.entity.Profile"/>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
 

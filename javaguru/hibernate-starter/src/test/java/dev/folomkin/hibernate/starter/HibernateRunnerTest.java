@@ -4,36 +4,62 @@ import dev.folomkin.hibernate.starter.entity.*;
 import dev.folomkin.hibernate.starter.util.HibernateUtil;
 import lombok.Cleanup;
 import org.junit.jupiter.api.Test;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 
 class HibernateRunnerTest {
 
     @Test
-    public void addUserAndCompany() throws SQLException {
+    public void checkOneToOne() throws SQLException {
         @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
         @Cleanup var session = sessionFactory.openSession();
         session.beginTransaction();
 
+        User user = User.builder()
+                .username("ivan4@gmail.com")
+                .build();
+
+        Profile profile = Profile.builder()
+                .language("RU")
+                .street("Wall St.")
+                .build();
+
+        session.save(user);
+        profile.setUser(user);
+        session.save(profile);
+
+        session.getTransaction().commit();
+    }
 
 
+    @Test
+    public void checkOrphanRemoval() throws SQLException {
+        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup var session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Company company = session.get(Company.class, 11);
+        company.getUsers().removeIf(user -> user.getId().equals(8));
+
+        session.getTransaction().commit();
+    }
+
+    @Test
+    public void addNewUserAndCompany() throws SQLException {
+        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup var session = sessionFactory.openSession();
+        session.beginTransaction();
 
         Company company = Company.builder()
-                .name("Google")
+                .name("VK")
                 .build();
         User user = User.builder()
-                .username("ivan2@gmail.com")
-                .personalInfo(
-                        PersonalInfo.builder()
-                                .firstname("ivan")
-                                .lastname("ivanov")
-                                .birthDate(new Birthday(LocalDate.of(2000, 4, 4)))
-                                .build()
-                )
-                .company(company)
-                .role(Role.ADMIN)
+                .username("ivanVk@gmail.com")
                 .build();
 
+        company.addUser(user);
+        session.save(company);
 
         session.getTransaction().commit();
     }

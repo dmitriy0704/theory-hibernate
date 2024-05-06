@@ -3,6 +3,7 @@ package dev.folomkin.hibernate.starter.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,6 +23,12 @@ public class Company {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "company")
-    private Set<User> users;
+    @Builder.Default
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<User> users = new HashSet<>();
+
+    public void addUser(User user) {
+        users.add(user);
+        user.setCompany(this);
+    }
 }
