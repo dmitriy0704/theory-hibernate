@@ -16,7 +16,7 @@ import java.time.Instant;
 @Builder
 @Entity
 @Table(name = "users_chat")
-public class UsersChat {
+public class UsersChat extends AuditableEntity<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +29,6 @@ public class UsersChat {
     @ManyToOne
     @JoinColumn(name = "chat_id")
     private Chat chat;
-
-    private Instant createdAt;
-
-    private String createdBy;
 
 
     public void setUser(User user) {
