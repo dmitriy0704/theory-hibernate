@@ -9,7 +9,41 @@ import java.sql.SQLException;
 import java.time.Instant;
 
 class HibernateRunnerTest {
+    @Test
+    public void  checkHQL() throws SQLException {
+        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup var session = sessionFactory.openSession();
+        session.beginTransaction();
+        // <-- Custom
 
+//        var company = Company.builder()
+//                .name("Yandex").build();
+//        session.save(company);
+//
+//        var programmer = Programmer.builder()
+//                .username("ivan@gmail.com")
+//                .language(Language.JAVA)
+//                .company(company)
+//                .build();
+//        session.save(programmer);
+//
+//        var manager = Manager.builder()
+//                .username("petr@gmail.com")
+//                .project("Java Enterprise")
+//                .company(company)
+//                .build();
+//        session.save(manager);
+//
+//        session.flush();
+//        session.clear();
+//
+//        var programmer1 = session.get(Programmer.class,1L);
+//        var manager1 = session.get(Manager.class,2L);
+
+
+        // Custom -->
+        session.getTransaction().commit();
+    }
     @Test
     public void testInheritance() throws SQLException {
         @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
@@ -17,29 +51,29 @@ class HibernateRunnerTest {
         session.beginTransaction();
         // <-- Custom
 
-        var company = Company.builder()
-                .name("Yandex").build();
-        session.save(company);
-
-        var programmer = Programmer.builder()
-                .username("ivan@gmail.com")
-                .language(Language.JAVA)
-                .company(company)
-                .build();
-        session.save(programmer);
-
-        var manager = Manager.builder()
-                .username("petr@gmail.com")
-                .project("Java Enterprise")
-                .company(company)
-                .build();
-        session.save(manager);
-
-        session.flush();
-        session.clear();
-
-        var programmer1 = session.get(Programmer.class,1L);
-        var manager1 = session.get(Manager.class,2L);
+//        var company = Company.builder()
+//                .name("Yandex").build();
+//        session.save(company);
+//
+//        var programmer = Programmer.builder()
+//                .username("ivan@gmail.com")
+//                .language(Language.JAVA)
+//                .company(company)
+//                .build();
+//        session.save(programmer);
+//
+//        var manager = Manager.builder()
+//                .username("petr@gmail.com")
+//                .project("Java Enterprise")
+//                .company(company)
+//                .build();
+//        session.save(manager);
+//
+//        session.flush();
+//        session.clear();
+//
+//        var programmer1 = session.get(Programmer.class,1L);
+//        var manager1 = session.get(Manager.class,2L);
 
 
         // Custom -->
