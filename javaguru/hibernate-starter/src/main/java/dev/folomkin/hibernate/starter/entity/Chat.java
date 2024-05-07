@@ -14,11 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Chat extends BaseEntity<Long> {
+public class Chat implements BaseEntity<Long> {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private String name;

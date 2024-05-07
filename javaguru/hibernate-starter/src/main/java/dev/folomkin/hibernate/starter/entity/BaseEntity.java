@@ -6,6 +6,6 @@ import java.io.Serializable;
 @MappedSuperclass
 public interface BaseEntity<T extends Serializable>{
 
-    T getI();
-    void setI(T i);
+    T getId();
+    void setId(T i);
 }

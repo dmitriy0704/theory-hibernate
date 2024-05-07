@@ -11,6 +11,42 @@ import java.time.Instant;
 class HibernateRunnerTest {
 
     @Test
+    public void testInheritance() throws SQLException {
+        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup var session = sessionFactory.openSession();
+        session.beginTransaction();
+        // <-- Custom
+
+        var company = Company.builder()
+                .name("Yandex").build();
+        session.save(company);
+
+        var programmer = Programmer.builder()
+                .username("ivan@gmail.com")
+                .language(Language.JAVA)
+                .company(company)
+                .build();
+        session.save(programmer);
+
+        var manager = Manager.builder()
+                .username("petr@gmail.com")
+                .project("Java Enterprise")
+                .company(company)
+                .build();
+        session.save(manager);
+
+        session.flush();
+        session.clear();
+
+        var programmer1 = session.get(Programmer.class,1L);
+        var manager1 = session.get(Manager.class,2L);
+
+
+        // Custom -->
+        session.getTransaction().commit();
+    }
+
+    @Test
     public void checkH2() {
         @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
         @Cleanup var session = sessionFactory.openSession();
@@ -34,14 +70,15 @@ class HibernateRunnerTest {
 
         Chat chat = session.get(Chat.class, 1L);
         User user = session.get(User.class, 10L);
-        UsersChat userChat = UsersChat.builder()
-                .createdAt(Instant.now())
-                .createdBy("Dmitriy")
-                .build();
 
+//        UsersChat userChat = UsersChat.builder()
+//                .createdAt(Instant.now())
+//                .createdBy("Dmitriy")
+//                .build();
+
+        UsersChat userChat = new UsersChat();
         userChat.setChat(chat);
         userChat.setUser(user);
-
         session.save(userChat);
         session.getTransaction().commit();
     }
@@ -52,19 +89,19 @@ class HibernateRunnerTest {
         @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
         @Cleanup var session = sessionFactory.openSession();
         session.beginTransaction();
-
-        User user = User.builder()
-                .username("ivan4@gmail.com")
-                .build();
-
-        Profile profile = Profile.builder()
-                .language("RU")
-                .street("Wall St.")
-                .build();
-
-        session.save(user);
-        profile.setUser(user);
-        session.save(profile);
+//
+//        User user = User.builder()
+//                .username("ivan4@gmail.com")
+//                .build();
+//
+//        Profile profile = Profile.builder()
+//                .language("RU")
+//                .street("Wall St.")
+//                .build();
+//
+//        session.save(user);
+//        profile.setUser(user);
+//        session.save(profile);
 
         session.getTransaction().commit();
     }
@@ -88,15 +125,15 @@ class HibernateRunnerTest {
         @Cleanup var session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Company company = Company.builder()
-                .name("VK")
-                .build();
-        User user = User.builder()
-                .username("ivanVk@gmail.com")
-                .build();
-
-        company.addUser(user);
-        session.save(company);
+//        Company company = Company.builder()
+//                .name("VK")
+//                .build();
+//        User user = User.builder()
+//                .username("ivanVk@gmail.com")
+//                .build();
+//
+//        company.addUser(user);
+//        session.save(company);
 
         session.getTransaction().commit();
     }
